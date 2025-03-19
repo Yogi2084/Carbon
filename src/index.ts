@@ -1,6 +1,6 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
-import { Prisma } from '@prisma/client';
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
@@ -43,10 +43,34 @@ try{
 
 catch(error){
   console.error("Error fetching students:", error);
-  
 }
 })
 
+
+//post proctor
+hono.post("/professor", async (context) => {
+  const{professorId,name,seniority,aadharNumber} = await context.req.json();
+  try{
+  const proctor = await prisma.professor.create({
+    data: {
+      professorId,
+      name,
+      seniority,
+      aadharNumber,
+    },
+  });
+  
+  return context.json(
+    {
+      proctor,
+    },
+    200
+  );
+}
+catch(error){
+  console.error("Error:", error);
+}
+});
 
 
 
