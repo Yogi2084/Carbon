@@ -19,6 +19,17 @@ hono.get("/student", async (context) => {
   );
 })
 
+// get all professors
+hono.get('/professor',async (context) =>{
+  const professor=await prisma.professor.findMany();
+  return context.json(
+    {
+      professor},200
+  )
+  
+})
+
+
 // create student
 
 hono.post("/student", async (context) => {
