@@ -129,7 +129,29 @@ return context.json(
 )
 })
 
-// 
+// update professor details using professorId
+
+hono.patch("/professor/:professorId",async(Context)=>{
+  const{professorId}=Context.req.param();
+  const{name,aadharNumber,seniority}=await Context.req.json();
+  const professor=await prisma.professor.update({
+    where:{
+      professorId:professorId,
+
+    },
+    data:{
+      name,aadharNumber,seniority
+    }
+
+})
+return Context.json(
+  {
+    professor
+  },200
+
+
+)
+})
 
 
 serve(hono);
