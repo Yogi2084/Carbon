@@ -97,7 +97,7 @@ catch(error){
 });
 
 // get all students under the proctorship of the given professor.
-hono.get("/student/professor/:professorId", async (context) => {
+hono.get("/professor/:professorId/proctorship", async (context) => {
   const { professorId } = context.req.param();
   const student = await prisma.student.findMany({
     where: {
@@ -110,8 +110,26 @@ hono.get("/student/professor/:professorId", async (context) => {
   
 })
 
+// update student details using studentId
 
+hono.patch("/student/:studentId",async(context)=>{
+  const{studentId}=context.req.param();
+  const{name,dateOfBirth,aadharNumber,proctorId}= await context.req.json();
+  const student= await prisma.student.update({
+    where:{
+      id:studentId,
+    },
+data:{
+  name,dateOfBirth,aadharNumber,proctorId
+}
+  })
+return context.json(
+  {
+    student},200
+)
+})
 
+// 
 
 
 serve(hono);
