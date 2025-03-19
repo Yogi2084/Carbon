@@ -96,6 +96,19 @@ catch(error){
 }
 });
 
+// get all students under the proctorship of the given professor.
+hono.get("/student/professor/:professorId", async (context) => {
+  const { professorId } = context.req.param();
+  const student = await prisma.student.findMany({
+    where: {
+      proctorId: professorId,
+    },
+  });
+  return context.json({
+    student,
+  },200);
+  
+})
 
 
 
