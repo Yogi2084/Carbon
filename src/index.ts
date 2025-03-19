@@ -19,6 +19,38 @@ hono.get("/student", async (context) => {
   );
 })
 
+// create student
+
+hono.post("/student", async (context) => {
+  const { name, dateOfBirth, aadharNumber, proctorId } = await context.req.json();
+try{
+  const student = await prisma.student.create({
+    data: {
+      name,
+      dateOfBirth,
+      aadharNumber,
+      proctorId,
+    },
+  });
+
+  return context.json(
+    {
+      student,
+    },
+    200
+  );
+}
+
+catch(error){
+  console.error("Error fetching students:", error);
+  
+}
+})
+
+
+
+
+
 
 
 serve(hono);
