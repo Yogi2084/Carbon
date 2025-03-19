@@ -29,6 +29,19 @@ hono.get('/professor',async (context) =>{
   
 })
 
+// get all students along with their professors details
+hono.get('/student/proctor',async(context)=>{
+  const student=await prisma.student.findMany({
+    include:{
+      proctor:true
+    }
+  });
+  return context.json({
+    student
+
+  },200)
+  
+})
 
 // create student
 
