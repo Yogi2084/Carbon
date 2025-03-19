@@ -153,6 +153,21 @@ return Context.json(
 )
 })
 
+//delete a student using studentId
+
+hono.delete("/student/:studentId",async(contex)=>{
+const{studentId}=contex.req.param();
+const student =await prisma.student.delete({
+  where:{
+    id:studentId,
+  }
+})
+return contex.json(
+  {
+    student
+  },200
+)
+})
 
 serve(hono);
 console.log(`Server is running on http://localhost:${3000}`)
