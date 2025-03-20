@@ -196,6 +196,18 @@ hono.post("/professors/:professorId/proctorships", async (context) => {
   );
 });
 
+// 12. Returns the library membership details of the student referenced by studentId
+
+hono.get("/students/:studentId/library-membership", async (context) => {
+  const studentId = context.req.param("studentId");
+  const libraryMembership = await prisma.libraryMembership.findMany({
+    where: { studentId: studentId },
+  });
+  return context.json({ libraryMembership }, 200);  
+  
+})
+
+
 
 serve(hono);
 console.log(`Server is running on http://localhost:${3000}`)
