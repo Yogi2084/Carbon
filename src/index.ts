@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 const hono = new Hono()
 
-// get all students
+
 hono.get("/student", async (context) => {  
   const student = await prisma.student.findMany();
 
@@ -48,6 +48,13 @@ hono.get('/student/proctor',async(context)=>{
 hono.post("/student", async (context) => {
   const { name, dateOfBirth, aadharNumber, proctorId } = await context.req.json();
 try{
+  const existAadhar = await prisma.student.findUnique({
+    where: {
+      aadharNumber: aadharNumber
+  }
+})
+if(!existAadhar){
+  
   const student = await prisma.student.create({
     data: {
       name,
@@ -63,6 +70,7 @@ try{
     },
     200
   );
+}
 }
 
 catch(error){
@@ -183,6 +191,9 @@ const professor=await prisma.professor.delete(
     professor},200
   )
 })
+
+//
+
 
 serve(hono);
 console.log(`Server is running on http://localhost:${3000}`)

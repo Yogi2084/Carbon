@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,38 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Student{
-id String @id @default(uuid())
-name String
-dateOfBirth DateTime
-aadharNumber String @unique
-proctorId String 
-proctor professor @relation(fields: [proctorId], references: [professorId]) 
-libraryMembership LibraryMembership?
-
+model Student {
+  id                String             @id @default(uuid())
+  name              String
+  dateOfBirth       DateTime
+  aadharNumber      String             @unique
+  proctorId         String?
+  proctor           professor?         @relation(fields: [proctorId], references: [professorId])
+  libraryMembership LibraryMembership?
 }
-model professor{
-  professorId String @id @default(uuid())
-  name String
-  seniority Seniority
-  aadharNumber String @unique
-  student Student[]
+
+model professor {
+  professorId  String    @id @default(uuid())
+  name         String
+  seniority    Seniority
+  aadharNumber String    @unique
+  student      Student[]
 }
+
 model LibraryMembership {
-  id          String   @id @default(uuid())
-  studentId   String   @unique
-  issueDate   DateTime
-  expiryDate  DateTime
-  student     Student   @relation(fields: [studentId], references: [id])
-
+  id         String   @id @default(uuid())
+  studentId  String   @unique
+  issueDate  DateTime
+  expiryDate DateTime
+  student    Student  @relation(fields: [studentId], references: [id])
 }
 
-
-enum Seniority{
+enum Seniority {
   JUNIOR
   SENIOR
   ASSOCIATE
-  HEAD
+  HEAD
 }
-
