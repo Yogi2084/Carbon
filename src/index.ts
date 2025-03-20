@@ -207,6 +207,22 @@ hono.get("/students/:studentId/library-membership", async (context) => {
   
 })
 
+// 13. Creates a library membership for the student referenced by studentId
+
+hono.post("/students/:studentId/library-membership", async (context) => {
+  const studentId = context.req.param("studentId");
+  const { issueDate, expiryDate } = await context.req.json();
+
+  const libraryMembership = await prisma.libraryMembership.create({
+    data: {
+      studentId,
+      issueDate,
+     expiryDate,
+    },
+  });
+  return context.json({ libraryMembership }, 200);
+});
+
 
 
 serve(hono);
