@@ -46,21 +46,14 @@ hono.get('/student/proctor',async(context)=>{
 // create student
 
 hono.post("/student", async (context) => {
-  const { name, dateOfBirth, aadharNumber, proctorId } = await context.req.json();
-try{
-  const existAadhar = await prisma.student.findUnique({
-    where: {
-      aadharNumber: aadharNumber
-  }
-})
-if(!existAadhar){
+  const { name, dateOfBirth, aadharNumber } = await context.req.json();
   
   const student = await prisma.student.create({
     data: {
       name,
       dateOfBirth,
       aadharNumber,
-      proctorId,
+
     },
   });
 
@@ -70,12 +63,7 @@ if(!existAadhar){
     },
     200
   );
-}
-}
-
-catch(error){
-  console.error("Error fetching students:", error);
-}
+  
 })
 
 
