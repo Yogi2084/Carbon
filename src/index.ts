@@ -63,7 +63,7 @@ hono.post("/student", async (context) => {
     },
     200
   );
-  
+
 })
 
 
@@ -180,7 +180,21 @@ const professor=await prisma.professor.delete(
   )
 })
 
-//
+// 11. Assigns a student under the proctorship of the professor referenced by professorId.
+hono.post("/professors/:professorId/proctorships", async (context) => {
+  const profId = context.req.param("professorId");
+  const { studentId } = await context.req.json();
+
+
+  const updateStudentProctorship = await prisma.student.update({
+    where: { id: studentId },
+    data: { proctorId: profId },
+  });
+  return context.json(
+    { "Updated Student Proctorship": updateStudentProctorship },
+    200
+  );
+});
 
 
 serve(hono);
