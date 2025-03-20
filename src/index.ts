@@ -245,5 +245,19 @@ hono.patch("/student/:studentId/library-membership", async (context) => {
 })
 
 
+// 15. Deletes the library membership of the student referenced by studentId
+
+hono.delete("/student/:studentId/library-membership", async (context) => {
+  const studentId = context.req.param("studentId");
+  const libraryMembership = await prisma.libraryMembership.delete({
+    where: { studentId: studentId },
+  });
+  return context.json(
+    {
+      libraryMembership 
+    }, 200
+  );
+});
+
 serve(hono);
 console.log(`Server is running on http://localhost:${3000}`)
