@@ -223,6 +223,26 @@ hono.post("/students/:studentId/library-membership", async (context) => {
   return context.json({ libraryMembership }, 200);
 });
 
+// 14. Updates the library membership details of the student referenced by studentId
+
+hono.patch("/student/:studentId/library-membership", async (context) => {
+  const studentId = context.req.param("studentId");
+  const { issueDate, expiryDate } = await context.req.json();
+
+  const libraryMembership = await prisma.libraryMembership.update({
+    where: { studentId: studentId },
+    data: {
+      issueDate,
+      expiryDate,
+    },
+  });
+  return context.json(
+    { 
+      libraryMembership 
+    }, 200
+  );
+  
+})
 
 
 serve(hono);
